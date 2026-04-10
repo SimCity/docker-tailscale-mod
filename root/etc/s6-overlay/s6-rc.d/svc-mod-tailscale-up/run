@@ -13,6 +13,10 @@ if [ -v TAILSCALE_HOSTNAME ]; then
     FLAGS="${FLAGS} --hostname=${TAILSCALE_HOSTNAME}"
 fi
 
+if [ -v TAILSCALE_ADVERTISE_TAGS ]; then
+    FLAGS="$flags --advertise-tags=${TAILSCALE_ADVERTISE_TAGS}"
+fi
+
 if [ -v TAILSCALE_USE_SSH ]; then
     FLAGS="${FLAGS} --ssh=${TAILSCALE_USE_SSH}"
 fi
@@ -30,13 +34,17 @@ fi
 tailscale up $FLAGS
 
 # configure serve or funnel, or reset if not set/removed
-if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
+if [ -v TAILSCALE_SERVE_PORT ] then
 
     if [ -v TAILSCALE_FUNNEL ]; then
         tailscale funnel --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
     else
         tailscale funnel reset
-        tailscale serve --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+        if [ -v TAILSCALE_SERVE_MODE ]; && [${TAILSCALE_SERVE_MODE} == "http"]; then 
+            tailscale serve --bg --http=80 http://localhost:"${TAILSCALE_SERVE_PORT}"
+        else
+            tailscale serve --bg http://localhost:"${TAILSCALE_SERVE_PORT}"
+        fi
     fi
 
 else
