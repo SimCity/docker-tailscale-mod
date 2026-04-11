@@ -14,7 +14,7 @@ if [ -v TAILSCALE_HOSTNAME ]; then
 fi
 
 if [ -v TAILSCALE_USE_TAGS ]; then
-    FLAGS="$flags --advertise-tags=${TAILSCALE_USE_TAGS}"
+    FLAGS="${FLAGS} --advertise-tags=${TAILSCALE_USE_TAGS}"
 fi
 
 if [ -v TAILSCALE_USE_SSH ]; then
@@ -35,7 +35,7 @@ tailscale up $FLAGS
 
 # configure serve or funnel, or reset if not set/removed
 # serve no longer requires mode specified and natively defaults to https on 443
-if [ -v TAILSCALE_SERVE_PORT ] then
+if [ -v TAILSCALE_SERVE_PORT ]; then
 
     SERVE_FLAGS="--bg"
 
