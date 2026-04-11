@@ -14,7 +14,7 @@ if [ -v TAILSCALE_HOSTNAME ]; then
 fi
 
 if [ -v TAILSCALE_USE_TAGS ]; then
-    FLAGS="$flags --advertise-tags=${TAILSCALE_ADVERTISE_TAGS}"
+    FLAGS="$flags --advertise-tags=${TAILSCALE_USE_TAGS}"
 fi
 
 if [ -v TAILSCALE_USE_SSH ]; then
@@ -39,7 +39,7 @@ if [ -v TAILSCALE_SERVE_PORT ] then
 
     SERVE_FLAGS="--bg"
 
-    if [[ -v TAILSCALE_SERVE_MODE && "${TAILSCALE_SERVE_MODE}" == "http"]]; then 
+    if [[ -v TAILSCALE_SERVE_MODE && ${TAILSCALE_SERVE_MODE} == "http"]]; then 
         SERVE_FLAGS="${SERVE_FLAGS} --http=80"
     fi
 
