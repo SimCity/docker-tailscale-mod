@@ -13,7 +13,7 @@ if [ -v TAILSCALE_HOSTNAME ]; then
     FLAGS="${FLAGS} --hostname=${TAILSCALE_HOSTNAME}"
 fi
 
-if [ -v TAILSCALE_ADVERTISE_TAGS ]; then
+if [ -v TAILSCALE_USE_TAGS ]; then
     FLAGS="$flags --advertise-tags=${TAILSCALE_ADVERTISE_TAGS}"
 fi
 
